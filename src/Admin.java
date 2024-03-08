@@ -4,8 +4,10 @@ public class Admin extends User {
         super(); // Call superclass constructor
     }
 
-    public Admin(String username, String email, String phone, String sex, String birthday, String password, int id) {
-        super(username, email, phone, sex, birthday, password, id); // Call superclass constructor
+
+    public Admin(String firstName, String lastName, String username, String password) {
+        super(firstName, lastName, username, password);
     }
 }
+
 
