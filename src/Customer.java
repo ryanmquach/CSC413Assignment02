@@ -7,7 +7,7 @@ public class Customer extends User {
     private String phoneNumber;
     private String accountNumber;
     private String dateOfBirth;
-    private List<Account> accounts; // Collection to store associated accounts
+    private List<BankAccount> accounts; // Collection to store associated accounts
 
     public Customer() {
         // Default constructor
@@ -69,11 +69,22 @@ public class Customer extends User {
 
     // Getters and setters for the account list
 
-    public List<Account> getAccounts() {
+    public List<BankAccount> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(List<BankAccount> accounts) {
         this.accounts = accounts;
     }
+
+    // Method to add an account to the customer
+    public void addAccount(BankAccount account) {
+        accounts.add(account);
+    }
+
+    // Method to remove an account from the customer
+    public void removeAccount(BankAccount account) {
+        accounts.remove(account);
+    }
 }
+

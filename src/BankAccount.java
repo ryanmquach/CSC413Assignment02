@@ -1,19 +1,19 @@
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public class BankAccount {
+abstract class BankAccount implements Comparable<BankAccount> {
     private String accountNumber;
     private double balance;
-    private Customer customer; // Reference to the customer who owns this account
-    private Date creationDate;
+    private Customer owner;
+    private LocalDateTime creationTime;
 
-    public BankAccount(String accountNumber, double balance, Customer customer, Date creationDate) {
+    public BankAccount(String accountNumber, double balance, Customer owner) {
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.customer = customer;
-        this.creationDate = creationDate;
+        this.owner = owner;
+        this.creationTime = LocalDateTime.now(); // Set the creation time to the current time
     }
 
-    // Getters and setters
+    // Getters and setters for account number, balance, owner, and creation time
 
     public String getAccountNumber() {
         return accountNumber;
@@ -31,20 +31,32 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getOwner() {
+        return owner;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setOwner(Customer owner) {
+        this.owner = owner;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    @Override
+    public int compareTo(BankAccount other) {
+        // Compare based on creation time first
+        int compareCreationTime = this.creationTime.compareTo(other.creationTime);
+        if (compareCreationTime != 0) {
+            return compareCreationTime;
+        }
+
+        // If creation times are equal, compare based on balance
+        return Double.compare(this.balance, other.balance);
     }
 }
 
