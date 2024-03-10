@@ -7,6 +7,8 @@ public class Customer extends User {
     private String phoneNumber;
     private String accountNumber;
     private String dateOfBirth;
+    private String securityQuestion;
+    private String securityAnswer;
     private List<BankAccount> accounts; // Collection to store associated accounts
 
     public Customer() {
@@ -15,13 +17,16 @@ public class Customer extends User {
     }
 
     public Customer(String firstName, String lastName, String username, String password,
-                    String address, String email, String phoneNumber, String accountNumber, String dateOfBirth) {
+                    String address, String email, String phoneNumber, String accountNumber,
+                    String dateOfBirth, String securityQuestion, String securityAnswer) {
         super(firstName, lastName, username, password);
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.accountNumber = accountNumber;
         this.dateOfBirth = dateOfBirth;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
         this.accounts = new ArrayList<>(); // Initialize the list
     }
 
@@ -65,6 +70,22 @@ public class Customer extends User {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
     }
 
     // Getters and setters for the account list

@@ -1,54 +1,32 @@
-public interface QueueInterface<T> {
-    /**
-     * Adds an element to the rear of the queue.
-     *
-     * @param element the element to be added
-     */
-    void add(T element);
+public interface QueueInterface<T extends Comparable<? super T>> {
+    /** Adds a new entry to this priority queue.
+     * @param newEntry an object */
+    public void add(T newEntry);
 
-    /**
-     * Adds an element to the rear of the queue.
-     *
-     * @param element the element to be added
-     * @return true if the element was added successfully, false otherwise
-     */
-    boolean offer(T element);
+    /** Removes and returns the item with the highest priority.
+     * @return either the object with the highest priority or, if the
+     * priority queue is empty before the operation, null */
+    public T remove();
 
-    /**
-     * Removes and returns the element at the front of the queue.
-     *
-     * @return the element removed from the front of the queue
-     */
-    T remove();
+    /** Retrieves the item with the highest priority.
+     * @return either the object with the highest priority or, if the
+     * priority queue is empty, null */
+    public T peek();
 
-    /**
-     * Removes and returns the element at the front of the queue.
-     *
-     * @return the element removed from the front of the queue, or null if the queue is empty
-     */
-    T poll();
+    /** Detects whether this priority queue is empty.
+     * @return true if the priority queue is empty, or false otherwise */
+    public boolean isEmpty();
 
-    /**
-     * Returns the element at the front of the queue without removing it.
-     *
-     * @return the element at the front of the queue
-     */
-    T element();
+    /** Gets the size of this priority queue.
+     * @return the number of entries currently in the priority queue */
+    public int getSize();
 
-    /**
-     * Returns the element at the front of the queue without removing it.
-     *
-     * @return the element at the front of the queue, or null if the queue is empty
-     */
-    T peek();
+    /** Removes all entries from this priority queue */
+    public void clear();
 
-    /**
-     * Returns the number of elements in the queue.
-     *
-     * @return the number of elements in the queue
-     */
-    int size();
+    public int compareTo(T other);
 }
+
 
 
 

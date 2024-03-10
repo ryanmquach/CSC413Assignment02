@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 
-abstract class BankAccount implements Comparable<BankAccount> {
+public class BankAccount {
     private String accountNumber;
     private double balance;
     private Customer owner;
@@ -47,16 +47,44 @@ abstract class BankAccount implements Comparable<BankAccount> {
         this.creationTime = creationTime;
     }
 
-    @Override
-    public int compareTo(BankAccount other) {
-        // Compare based on creation time first
-        int compareCreationTime = this.creationTime.compareTo(other.creationTime);
-        if (compareCreationTime != 0) {
-            return compareCreationTime;
+    // Method to withdraw money from the account
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawal of $" + amount + " from account " + accountNumber + " successful.");
+        } else {
+            System.out.println("Insufficient funds or invalid amount for withdrawal.");
+        }
+    }
+
+    // Method to deposit money into the account
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposit of $" + amount + " into account " + accountNumber + " successful.");
+        } else {
+            System.out.println("Invalid amount for deposit.");
+        }
+    }
+
+    public void transfer(BankAccount destinationAccount, double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid transfer amount.");
+            return;
+        }
+        if (this.balance < amount) {
+            System.out.println("Insufficient funds for transfer.");
+            return;
         }
 
-        // If creation times are equal, compare based on balance
-        return Double.compare(this.balance, other.balance);
+        this.withdraw(amount);
+        destinationAccount.deposit(amount);
+
+        // Print transfer details
+        System.out.println("Transfer of $" + amount + " from account " + this.accountNumber +
+                " to account " + destinationAccount.getAccountNumber() + " completed.");
     }
 }
+
+
 
