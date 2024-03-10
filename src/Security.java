@@ -3,17 +3,17 @@ import java.util.Map;
 
 public class Security {
     private Map<String, String> userCredentials; // Map of username to password
-    private Map<String, String> securityQuestions; // Map of username to security question
+    private Map<String, String[]> userSecurityInfo; // Map of username to security question and answer
 
     public Security() {
         userCredentials = new HashMap<>();
-        securityQuestions = new HashMap<>();
+        userSecurityInfo = new HashMap<>();
     }
 
-    // Method to register a new user with their credentials and security question
+    // Method to register a new user with their credentials and security question/answer
     public void registerUser(String username, String password, String securityQuestion, String securityAnswer) {
         userCredentials.put(username, password);
-        securityQuestions.put(username, securityAnswer);
+        userSecurityInfo.put(username, new String[]{securityQuestion, securityAnswer});
     }
 
     // Method to authenticate a user upon login
@@ -21,7 +21,8 @@ public class Security {
         if (userCredentials.containsKey(username)) {
             String storedPassword = userCredentials.get(username);
             if (storedPassword.equals(password)) {
-                String storedSecurityAnswer = securityQuestions.get(username);
+                String[] securityInfo = userSecurityInfo.get(username);
+                String storedSecurityAnswer = securityInfo[1];
                 if (storedSecurityAnswer.equals(securityAnswer)) {
                     System.out.println("Welcome, " + username + "!");
                     return true;
@@ -32,4 +33,6 @@ public class Security {
         return false;
     }
 }
+
+
 
