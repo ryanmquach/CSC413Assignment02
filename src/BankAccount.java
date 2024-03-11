@@ -1,20 +1,17 @@
-import java.util.Date;
+import java.time.LocalDate;
 
-public class BankAccount implements Comparable<BankAccount>{
+public class BankAccount implements Comparable<BankAccount> {
     private String accountNumber;
     private double balance;
     private Customer owner;
-    private Date creationTime;
+    private LocalDate creationTime;
 
-    public BankAccount(){
-
-    }
 
     public BankAccount(String accountNumber, double balance, Customer owner) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.owner = owner;
-        this.creationTime = new Date(); // Set the creation time to the current time
+        this.creationTime = LocalDate.now(); // Set the creation time to the current date
     }
 
     // Getters and setters for account number, balance, owner, and creation time
@@ -43,11 +40,11 @@ public class BankAccount implements Comparable<BankAccount>{
         this.owner = owner;
     }
 
-    public Date getCreationTime() {
+    public LocalDate getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(LocalDate creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -89,15 +86,18 @@ public class BankAccount implements Comparable<BankAccount>{
                 " to account " + destinationAccount.getAccountNumber() + " completed.");
     }
 
-    @Override
-    public int compareTo(BankAccount o) {
-        return 0;
+
+    public int compareTo(BankAccount other) {
+        int compareCreationTime = this.getCreationTime().compareTo(other.getCreationTime());
+        if (compareCreationTime != 0) {
+            return compareCreationTime;
+        }
+        return Double.compare(this.getBalance(), other.getBalance());
     }
 
     public String toString() {
-        return "Account Number: " + accountNumber + ", Balance: $" + balance + ", Customer:" + owner;
+        return "Account Number: " + accountNumber + ", Balance: $" + balance + ", Customer: " + owner;
     }
 }
-
 
 

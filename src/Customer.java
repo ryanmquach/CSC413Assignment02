@@ -99,9 +99,7 @@ public class Customer extends User implements Comparable<Customer> {
     }
 
     // Method to add an account to the customer and the priority queue
-    // Method to add an account to the customer
-    // Method to add an account to the customer
-    // Method to add an account to the customer
+
     public void addAccount(BankAccount account, String accountType, LListPriorityQueue<BankAccount> priorityQueue) {
         accounts.add(account);
         priorityQueue.add(account);
@@ -137,6 +135,22 @@ public class Customer extends User implements Comparable<Customer> {
     public int compareTo(Customer o) {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        String customerString =
+                "Name: " + getFirstName() + " " + getLastName() +
+                        ", Username: " + getUsername() +
+                        ", Address: " + getAddress() + "\n" + // New line after the address
+                        "Email: " + getEmail() +
+                        ", Phone Number: " + getPhoneNumber() +
+                        ", Account Number: " + getAccountNumber() +
+                        ", Date of Birth: " + getDateOfBirth() + "\n" +
+                        "Security Question: " + getSecurityQuestion() +
+                        ", Security Answer: " + getSecurityAnswer();
+        return customerString;
+    }
+
 }
 
 

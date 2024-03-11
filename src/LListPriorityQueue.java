@@ -1,8 +1,7 @@
 import java.util.Comparator;
 import java.util.Iterator;
 
-
-public class LListPriorityQueue<T extends BankAccount> implements QueueInterface<T> {
+public class LListPriorityQueue<T extends Comparable<? super T>> implements QueueInterface<T> {
 
     public class Node {
         private T data;
@@ -33,26 +32,48 @@ public class LListPriorityQueue<T extends BankAccount> implements QueueInterface
     private Node front;
     private int size;
 
-    public LListPriorityQueue() {
+    public static LListPriorityQueue instance = null;
+
+    // Private constructor to prevent external instantiation
+    private LListPriorityQueue() {
         front = null;
         size = 0;
+    }
+
+    // Method to provide a single instance of the class
+    public static synchronized LListPriorityQueue getInstance() {
+        if (instance == null) {
+            instance = new LListPriorityQueue();
+        }
+        return instance;
     }
 
     @Override
     public void add(T newEntry) {
         Node newNode = new Node(newEntry);
-        if (isEmpty() || compare(newEntry, front.getData()) < 0) {
+        if (isEmpty() || compare(newEntry, front.getData()) > 0) {
             newNode.setNext(front);
             front = newNode;
         } else {
+            Node previous = null;
             Node current = front;
-            while (current.getNext() != null && compare(newEntry, current.getNext().getData()) >= 0) {
+            while (current != null && compare(newEntry, current.getData()) <= 0) {
+                previous = current;
                 current = current.getNext();
             }
-            newNode.setNext(current.getNext());
-            current.setNext(newNode);
+            if (previous != null) {
+                previous.setNext(newNode);
+            } else {
+                front = newNode;
+            }
+            newNode.setNext(current);
         }
         size++;
+    }
+
+
+    private int compare(T obj1, T obj2) {
+        return obj1.compareTo(obj2);
     }
 
     @Override
@@ -91,34 +112,13 @@ public class LListPriorityQueue<T extends BankAccount> implements QueueInterface
     }
 
     @Override
-    public int compareTo(T other) {
-        return 0;
-    }
-
-    // Define a comparator for comparing BankAccount objects based on creation time and balance
-    private static final Comparator<BankAccount> COMPARATOR = new Comparator<BankAccount>() {
-        @Override
-        public int compare(BankAccount o1, BankAccount o2) {
-            int compareCreationTime = o1.getCreationTime().compareTo(o2.getCreationTime());
-            if (compareCreationTime != 0) {
-                return compareCreationTime;
-            }
-            return Double.compare(o1.getBalance(), o2.getBalance());
-        }
-    };
-
-    // Utility method to compare two BankAccount objects using the defined comparator
-    private int compare(T obj1, T obj2) {
-        return COMPARATOR.compare(obj1, obj2);
-    }
-
-    @Override
     public Iterator<T> iterator() {
-        return new PriorityQueueIterator();
+        return new PQIterator();
     }
 
-    private class PriorityQueueIterator implements Iterator<T> {
+    class PQIterator implements Iterator<T> {
         private Node current = front;
+        private Node previous = null; // Keep track of the previous node
 
         @Override
         public boolean hasNext() {
@@ -128,9 +128,35 @@ public class LListPriorityQueue<T extends BankAccount> implements QueueInterface
         @Override
         public T next() {
             T data = current.getData();
+            previous = current; // Update the previous node
             current = current.getNext();
             return data;
         }
+
+        // Method to reset the iterator to the beginning of the priority queue
+        public void reset() {
+            current = front;
+            previous = null;
+        }
+
+        // Method to remove the last iterated element
+        public void removeLast() {
+            if (previous != null) {
+                if (previous == front) {
+                    front = front.getNext();
+                } else {
+                    Node temp = front;
+                    while (temp.getNext() != previous) {
+                        temp = temp.getNext();
+                    }
+                    temp.setNext(previous.getNext());
+                }
+            }
+        }
     }
 }
+
+
+
+
 

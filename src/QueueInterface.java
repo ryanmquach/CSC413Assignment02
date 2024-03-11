@@ -26,8 +26,6 @@ public interface QueueInterface<T extends Comparable<? super T>> {
     /** Removes all entries from this priority queue */
     public void clear();
 
-    public int compareTo(T other);
-
     Iterator<T> iterator();
 }
 
