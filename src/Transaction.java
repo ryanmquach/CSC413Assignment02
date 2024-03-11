@@ -25,6 +25,12 @@ public class Transaction {
         // You can also send email notifications here
     }
 
-    // Other methods, getters, and setters
+    @Override
+    public String toString() {
+        return "Transaction: Type=" + type +
+                ", Account=" + account.getAccountNumber() +
+                ", Amount=" + amount +
+                ", Timestamp=" + timestamp;
+    }
 }
 

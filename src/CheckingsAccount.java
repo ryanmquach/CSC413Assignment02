@@ -12,4 +12,9 @@ public class CheckingsAccount extends BankAccount {
     public void setOverdraftProtection(boolean overdraftProtection) {
         this.overdraftProtection = overdraftProtection;
     }
+
+    @Override
+    public String toString() {
+        return "Checking Account - " + super.toString();
+    }
 }

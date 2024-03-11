@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends User {
+public class Customer extends User implements Comparable<Customer> {
     private String address;
     private String email;
     private String phoneNumber;
@@ -98,14 +98,45 @@ public class Customer extends User {
         this.accounts = accounts;
     }
 
+    // Method to add an account to the customer and the priority queue
     // Method to add an account to the customer
-    public void addAccount(BankAccount account) {
+    // Method to add an account to the customer
+    // Method to add an account to the customer
+    public void addAccount(BankAccount account, String accountType, LListPriorityQueue<BankAccount> priorityQueue) {
         accounts.add(account);
+        priorityQueue.add(account);
     }
 
-    // Method to remove an account from the customer
-    public void removeAccount(BankAccount account) {
+    // Method to remove an account from the customer and the priority queue
+    public void removeAccount(BankAccount account, LListPriorityQueue<BankAccount> priorityQueue) {
         accounts.remove(account);
+        // You might need to remove the account from the priority queue as well if needed
+    }
+
+    // Method to retrieve the checking account of the customer
+    public BankAccount getCheckingAccount() {
+        for (BankAccount account : accounts) {
+            if (account instanceof CheckingsAccount) {
+                return account;
+            }
+        }
+        return null; // Return null if no checking account is found
+    }
+
+    // Method to retrieve the savings account of the customer
+    public BankAccount getSavingsAccount() {
+        for (BankAccount account : accounts) {
+            if (account instanceof SavingsAccount) {
+                return account;
+            }
+        }
+        return null; // Return null if no savings account is found
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+        return 0;
     }
 }
+
 

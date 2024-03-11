@@ -12,4 +12,9 @@ public class SavingsAccount extends BankAccount {
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
+
+    @Override
+    public String toString() {
+        return "Savings Account - " + super.toString();
+    }
 }

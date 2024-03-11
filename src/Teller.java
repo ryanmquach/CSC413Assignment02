@@ -1,15 +1,4 @@
-import java.util.Date;
-
 public class Teller {
-    public void deposit(BankAccount account, double amount) {
-        // Perform deposit operation
-        account.deposit(amount);
-
-        // Record transaction
-        Transaction transaction = new Transaction(Transaction.TransactionType.DEPOSIT, account, amount);
-        transaction.recordTransaction();
-    }
-
     public void withdraw(BankAccount account, double amount) {
         // Perform withdrawal operation
         account.withdraw(amount);
@@ -32,7 +21,17 @@ public class Teller {
         Transaction transaction2 = new Transaction(Transaction.TransactionType.TRANSFER_IN, destinationAccount, amount);
         transaction2.recordTransaction();
     }
+
+    public void deposit(BankAccount account, double amount) {
+        // Perform deposit operation
+        account.deposit(amount);
+
+        // Record transaction
+        Transaction transaction = new Transaction(Transaction.TransactionType.DEPOSIT, account, amount);
+        transaction.recordTransaction();
+    }
 }
+
 
 
 

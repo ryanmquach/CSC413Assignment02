@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public interface QueueInterface<T extends Comparable<? super T>> {
     /** Adds a new entry to this priority queue.
      * @param newEntry an object */
@@ -25,6 +27,8 @@ public interface QueueInterface<T extends Comparable<? super T>> {
     public void clear();
 
     public int compareTo(T other);
+
+    Iterator<T> iterator();
 }
 
 

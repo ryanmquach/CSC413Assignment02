@@ -1,16 +1,20 @@
-import java.time.LocalDateTime;
+import java.util.Date;
 
-public class BankAccount {
+public class BankAccount implements Comparable<BankAccount>{
     private String accountNumber;
     private double balance;
     private Customer owner;
-    private LocalDateTime creationTime;
+    private Date creationTime;
+
+    public BankAccount(){
+
+    }
 
     public BankAccount(String accountNumber, double balance, Customer owner) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.owner = owner;
-        this.creationTime = LocalDateTime.now(); // Set the creation time to the current time
+        this.creationTime = new Date(); // Set the creation time to the current time
     }
 
     // Getters and setters for account number, balance, owner, and creation time
@@ -39,11 +43,11 @@ public class BankAccount {
         this.owner = owner;
     }
 
-    public LocalDateTime getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(LocalDateTime creationTime) {
+    public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -83,6 +87,15 @@ public class BankAccount {
         // Print transfer details
         System.out.println("Transfer of $" + amount + " from account " + this.accountNumber +
                 " to account " + destinationAccount.getAccountNumber() + " completed.");
+    }
+
+    @Override
+    public int compareTo(BankAccount o) {
+        return 0;
+    }
+
+    public String toString() {
+        return "Account Number: " + accountNumber + ", Balance: $" + balance + ", Customer:" + owner;
     }
 }
 

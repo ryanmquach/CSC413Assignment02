@@ -1,10 +1,12 @@
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.Iterator;
 
-public class LListPriorityQueue<T extends BankAccount & Comparable<? super T>> implements QueueInterface<T> {
 
-    public class Node<T> {
+public class LListPriorityQueue<T extends BankAccount> implements QueueInterface<T> {
+
+    public class Node {
         private T data;
-        private Node<T> next;
+        private Node next;
 
         public Node(T data) {
             this.data = data;
@@ -19,17 +21,16 @@ public class LListPriorityQueue<T extends BankAccount & Comparable<? super T>> i
             this.data = data;
         }
 
-        public Node<T> getNext() {
+        public Node getNext() {
             return next;
         }
 
-        public void setNext(Node<T> next) {
+        public void setNext(Node next) {
             this.next = next;
         }
     }
 
-
-    private Node<T> front;
+    private Node front;
     private int size;
 
     public LListPriorityQueue() {
@@ -39,13 +40,13 @@ public class LListPriorityQueue<T extends BankAccount & Comparable<? super T>> i
 
     @Override
     public void add(T newEntry) {
-        Node<T> newNode = new Node<>(newEntry);
-        if (isEmpty() || newEntry.compareTo(front.getData()) < 0) {
+        Node newNode = new Node(newEntry);
+        if (isEmpty() || compare(newEntry, front.getData()) < 0) {
             newNode.setNext(front);
             front = newNode;
         } else {
-            Node<T> current = front;
-            while (current.getNext() != null && newEntry.compareTo(current.getNext().getData()) >= 0) {
+            Node current = front;
+            while (current.getNext() != null && compare(newEntry, current.getNext().getData()) >= 0) {
                 current = current.getNext();
             }
             newNode.setNext(current.getNext());
@@ -88,18 +89,48 @@ public class LListPriorityQueue<T extends BankAccount & Comparable<? super T>> i
         front = null;
         size = 0;
     }
-    // Implement compareTo method to compare BankAccount objects based on creation time and balance
+
     @Override
     public int compareTo(T other) {
-        // Implement comparison logic for priority based on creation time and balance
-        // Compare based on creation time first
-        int compareCreationTime = this.peek().getCreationTime().compareTo(other.getCreationTime());
-        if (compareCreationTime != 0) {
-            return compareCreationTime;
-        }
-
-        // If creation times are equal, compare based on balance
-        return Double.compare(this.peek().getBalance(), other.getBalance());
+        return 0;
     }
 
+    // Define a comparator for comparing BankAccount objects based on creation time and balance
+    private static final Comparator<BankAccount> COMPARATOR = new Comparator<BankAccount>() {
+        @Override
+        public int compare(BankAccount o1, BankAccount o2) {
+            int compareCreationTime = o1.getCreationTime().compareTo(o2.getCreationTime());
+            if (compareCreationTime != 0) {
+                return compareCreationTime;
+            }
+            return Double.compare(o1.getBalance(), o2.getBalance());
+        }
+    };
+
+    // Utility method to compare two BankAccount objects using the defined comparator
+    private int compare(T obj1, T obj2) {
+        return COMPARATOR.compare(obj1, obj2);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new PriorityQueueIterator();
+    }
+
+    private class PriorityQueueIterator implements Iterator<T> {
+        private Node current = front;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            T data = current.getData();
+            current = current.getNext();
+            return data;
+        }
+    }
 }
+
