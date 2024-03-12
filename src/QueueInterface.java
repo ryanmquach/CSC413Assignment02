@@ -8,7 +8,7 @@ public interface QueueInterface<T extends Comparable<? super T>> {
     /** Removes and returns the item with the highest priority.
      * @return either the object with the highest priority or, if the
      * priority queue is empty before the operation, null */
-    public T remove();
+    public T remove(T o);
 
     /** Retrieves the item with the highest priority.
      * @return either the object with the highest priority or, if the

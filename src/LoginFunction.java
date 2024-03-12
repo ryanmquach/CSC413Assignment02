@@ -1,21 +1,22 @@
 public class LoginFunction {
-    private Security securityControl;
+    public Security security = new Security(); // Initialize the Security object
 
-    public LoginFunction(Security securityControl) {
-        this.securityControl = securityControl;
+    public LoginFunction(Security security) {
     }
 
-    public void login(String username, String password, String securityAnswer) {
-        // Authenticate the user with the security control
-        boolean isAuthenticated = securityControl.authenticateUser(username, password, securityAnswer);
+    // Method to handle the login process with provided username and password
+    public boolean login(String username, String password) {
+        // Attempt to authenticate the user
+        boolean isAuthenticated = security.authenticateUser(username, password);
+
         if (isAuthenticated) {
-            // Proceed with the requested functionality
-            // For example, allow the user to access their account
-            // This part would be handled by the rest of your application logic
-            System.out.println("User authenticated successfully!");
+            System.out.println("Login successful for user: " + username);
+            // Proceed with whatever action comes after successful login
         } else {
-            System.out.println("Authentication failed. Please try again.");
+            System.out.println("Login failed for user: " + username);
         }
+        return isAuthenticated;
     }
 }
+
 

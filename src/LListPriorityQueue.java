@@ -77,7 +77,7 @@ public class LListPriorityQueue<T extends Comparable<? super T>> implements Queu
     }
 
     @Override
-    public T remove() {
+    public T remove(T obj1) {
         if (isEmpty()) {
             return null;
         }

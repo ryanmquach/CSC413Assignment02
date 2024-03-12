@@ -103,11 +103,13 @@ public class Customer extends User implements Comparable<Customer> {
     public void addAccount(BankAccount account, String accountType, LListPriorityQueue<BankAccount> priorityQueue) {
         accounts.add(account);
         priorityQueue.add(account);
+
     }
 
     // Method to remove an account from the customer and the priority queue
     public void removeAccount(BankAccount account, LListPriorityQueue<BankAccount> priorityQueue) {
         accounts.remove(account);
+        priorityQueue.remove(account);
         // You might need to remove the account from the priority queue as well if needed
     }
 
