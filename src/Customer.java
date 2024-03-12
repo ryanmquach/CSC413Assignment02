@@ -16,10 +16,10 @@ public class Customer extends User implements Comparable<Customer> {
         this.accounts = new ArrayList<>(); // Initialize the list
     }
 
-    public Customer(String firstName, String lastName, String username, String password,
+    public Customer(String firstName, String lastName,  String username, int id, String password,
                     String address, String email, String phoneNumber, String accountNumber,
                     String dateOfBirth, String securityQuestion, String securityAnswer) {
-        super(firstName, lastName, username, password);
+        super(firstName, lastName, username, id, password);
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;

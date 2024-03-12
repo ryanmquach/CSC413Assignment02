@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import javax.json.stream.*;
 import javax.json.JsonReader;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 import javax.json.Json;
+import java.sql.Connection;
+import java.sql.SQLException;
+import org.modelmapper.ModelMapper;
 
 public class Main {
 
@@ -34,8 +36,10 @@ public class Main {
         LListPriorityQueue<BankAccount> priorityQueue = LListPriorityQueue.getInstance();
         Teller teller = new Teller();
 
+        System.out.println("Now Testing Creation and Queue functionality...");
+        System.out.println();
         // Create Customer 1 with a checking account with $100
-        Customer customer1 = new Customer("Alice", "Johnson", "alice.johnson", "password", "123 Main St", "alice.johnson@example.com", "1234567890", "C001", "01-01-1980", "What is your favorite color?", "Blue");
+        Customer customer1 = new Customer("Alice", "Johnson", "alice.johnson", 0001, "password", "123 Main St", "alice.johnson@example.com", "1234567890", "C001", "01-01-1980", "What is your favorite color?", "Blue");
         CheckingsAccount checkingAccount1 = new CheckingsAccount("C001A001", 100, customer1);
         // Add checking account to Customer 1
         customer1.addAccount(checkingAccount1, "Checking", priorityQueue);
@@ -47,7 +51,7 @@ public class Main {
         System.out.println(); // Add spacing after printing the priority queue
 
         // Create Customer 2 with a checking and savings account, both with $300 each
-        Customer customer2 = new Customer("Bob", "Smith", "bob.smith", "password", "456 Oak St", "bob.smith@example.com", "9876543210", "C002", "02-02-1990", "What is your pet's name?", "Fluffy");
+        Customer customer2 = new Customer("Bob", "Smith", "bob.smith", 0002, "password", "456 Oak St", "bob.smith@example.com", "9876543210", "C002", "02-02-1990", "What is your pet's name?", "Fluffy");
         CheckingsAccount checkingAccount2 = new CheckingsAccount("C002A001", 300, customer2);
         SavingsAccount savingsAccount2 = new SavingsAccount("C002A002", 300, customer2);
         customer2.addAccount(checkingAccount2, "Checking", priorityQueue);
@@ -60,7 +64,7 @@ public class Main {
         System.out.println(); // Add spacing after printing the priority queue
 
         // Create Customer 3 with a savings account with $200
-        Customer customer3 = new Customer("Charlie", "Brown", "charlie.brown", "password", "789 Pine St", "charlie.brown@example.com", "5551234567", "C003", "03-03-2000", "What is your mother's maiden name?", "Smith");
+        Customer customer3 = new Customer("Charlie", "Brown", "charlie.brown", 0003,"password", "789 Pine St", "charlie.brown@example.com", "5551234567", "C003", "03-03-2000", "What is your mother's maiden name?", "Smith");
         SavingsAccount savingsAccount3 = new SavingsAccount("C003A001", 200, customer3);
         // Add savings account to Customer 3
         customer3.addAccount(savingsAccount3, "Savings", priorityQueue);
@@ -72,7 +76,7 @@ public class Main {
         System.out.println(); // Add spacing after printing the priority queue
 
         // Create Customer 4 with a checking account with $250
-        Customer customer4 = new Customer("David", "Lee", "david.lee", "password", "101 Elm St", "david.lee@example.com", "9998887777", "C004", "04-04-2010", "What city were you born in?", "New York");
+        Customer customer4 = new Customer("David", "Lee", "david.lee", 0004, "password", "101 Elm St", "david.lee@example.com", "9998887777", "C004", "04-04-2010", "What city were you born in?", "New York");
         CheckingsAccount checkingAccount4 = new CheckingsAccount("C004A001", 250, customer4);
         // Add checking account to Customer 4
         customer4.addAccount(checkingAccount4, "Checking", priorityQueue);
@@ -81,10 +85,11 @@ public class Main {
         // Show the updated list
         System.out.println("Updated list after creating Customer 4");
         printPriorityQueue(priorityQueue);
-        System.out.println(); // Add spacing after printing the priority queue
+        System.out.println();
 
         // Perform transactions
         System.out.println("Now testing transaction functionalities...");
+        System.out.println();
         // Withdraw $50 from Customer 1's checking account
         teller.withdraw(customer1.getCheckingAccount(), 50);
         System.out.println("Withdrawal of $50 from Customer 1's checking account successful");
@@ -103,7 +108,7 @@ public class Main {
 
         // Show JSON strings for each customer
         System.out.println();
-        System.out.println("JSON strings for each customer:");
+        System.out.println("Now Testing Deletion functionality...");
         // You would need to implement this part based on your Transaction class implementation
 
         // Delete Customer 2's checking account
@@ -118,6 +123,7 @@ public class Main {
         // Attempt login with invalid credentials
         System.out.println();
         System.out.println("Attempting login with invalid credentials of 'invalidUsername' and 'invalidPassword'...");
+        System.out.println();
         LoginFunction loginFunction = new LoginFunction(new Security());
         loginFunction.login("invalidUsername", "invalidPassword");
 
@@ -125,10 +131,11 @@ public class Main {
         objectMapper = new ObjectMapper();
 
         System.out.println();
-        System.out.println("\nCreating separate Customer object to perform JSON test requirement in assignment");
+        System.out.println("\nCreating separate Customer object to perform JSON test requirement in assignment...");
+        System.out.println();
 
         // Create Customer object
-        Customer customer = new Customer("Alice", "Johnson", "alice.johnson", "password",
+        Customer customer = new Customer("Alice", "Johnson", "alice.johnson", 1, "password",
             "123 Main St", "alice.johnson@example.com", "1234567890", "C001",
             "01-01-1980", "What is your favorite color?", "Blue");
         String customerString = "";
@@ -190,8 +197,50 @@ public class Main {
     // Working with Customer Objects
     readJsonCustomer();
     readJsonCustomers();
-}
 
+        System.out.println();
+        System.out.println("Now Testing DAO and DTO functionality on a new customer object...");
+        System.out.println();
+        Customer customerDAOTest;
+        String samplefirstName = "John";
+        String samplelastName = "Doe";
+        String sampleUsername = "John Doe";
+        int sampleId =1;
+        String samplePassword = "password";
+        String SampleAddress = "123 Main St";
+        String sampleEmail = "johndoe@example.com";
+        String samplePhone = "123-456-7890";
+        String sampelAccntNum = "ACC123456";
+        String sampleDOB = "1990-01-01";
+        String samplesecQ = "What is your favorite color?";
+        String samplesecAns = "Blue";
+
+        // Create a sample Customer object
+        customerDAOTest = new Customer( "John", "Doe", "johndoe", 1,"password", "123 Main St",
+                "johndoe@example.com", "123-456-7890", "ACC123456",
+                "1990-01-01", "What is your favorite color?", "Blue");
+
+        // Test the DTO mapping
+        testModelMapper(samplefirstName, samplelastName, sampleUsername, sampleId, samplePassword,
+                SampleAddress, sampleEmail, samplePhone, sampelAccntNum, sampleDOB , samplesecQ, samplesecAns);
+    }
+
+
+    private static void testModelMapper(String samplefirstName, String samplelastName, String sampleUsername, int sampleId, String samplePassword,
+    String SampleAddress, String sampleEmail, String samplePhone, String sampelAccntNum, String sampleDOB , String samplesecQ, String samplesecAns) {
+        // Create model mapper
+        ModelMapper modelMapper = new ModelMapper();
+
+        // Create Data Transfer Object based on Business Object
+        CustomerDTO customerDTO = new CustomerDTO(samplefirstName, samplelastName, sampleUsername, sampleId, samplePassword,
+                SampleAddress, sampleEmail, samplePhone, sampelAccntNum, sampleDOB , samplesecQ, samplesecAns);
+
+        // Create Business Object from the DTO Object
+        Customer customer = modelMapper.map(customerDTO, Customer.class);
+
+        System.out.println("\nSuccessfully mapped and unmapped customer with ID: " + customer.getId() +
+                " with customer Details:\n" + customer.toString());
+    }
     public static void readJsonCustomer() {
         Customer customerObj = null;
 
@@ -223,6 +272,8 @@ public class Main {
             System.out.println(customer.toString());
         }
     }
+
+
 
     // Utility method to print the priority queue
     private static void printPriorityQueue(LListPriorityQueue<BankAccount> priorityQueue) {

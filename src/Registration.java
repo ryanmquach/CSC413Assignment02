@@ -9,7 +9,7 @@ public class Registration {
     }
 
     // Method to register a new user with provided details
-    public void registerUser(String firstName, String lastName, String username, String password,
+    public void registerUser(String firstName, String lastName, String username, int id, String password,
                              String address, String email, String phoneNumber, String accountNumber,
                              String dateOfBirth, String securityQuestion, String securityAnswer,
                              String accountType) {
@@ -17,7 +17,7 @@ public class Registration {
         security.registerUser(username, password);
 
         // Create a new Customer object with provided details
-        Customer newCustomer = new Customer(firstName, lastName, username, password,
+        Customer newCustomer = new Customer(firstName, lastName, username, id, password,
                 address, email, phoneNumber, accountNumber,
                 dateOfBirth, securityQuestion, securityAnswer);
 
