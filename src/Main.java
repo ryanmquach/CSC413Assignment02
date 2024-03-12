@@ -1,6 +1,34 @@
+import java.lang.*;
+import java.io.*;
+import java.util.List;
 import java.util.Iterator;
+import java.net.*;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import javax.json.stream.*;
+import javax.json.JsonReader;
+import javax.json.JsonObject;
+import javax.json.JsonArray;
+import javax.json.Json;
 
 public class Main {
+
+    static ObjectMapper objectMapper = null;
+
+    static String jsonCustomerString = "{ \"firstName\" : \"Alice\", \"lastName\" : \"Johnson\", \"username\" : \"alice.johnson\"," +
+            " \"password\" : \"password\", \"address\" : \"123 Main St\", \"email\" : \"alice.johnson@example.com\", \"phoneNumber\" :" +
+            " \"1234567890\", \"accountNumber\" : \"C001\", \"dateOfBirth\" : \"01-01-1980\", \"securityQuestion\" : \"What is your favorite color?\"," +
+            " \"securityAnswer\" : \"Blue\" }";
+    static String jsonCustomersString = "[{ \"firstName\" : \"Alice\", \"lastName\" : \"Johnson\", \"username\" : \"alice.johnson\", " +
+            "\"password\" : \"password\", \"address\" : \"123 Main St\", \"email\" : \"alice.johnson@example.com\", \"phoneNumber\" : " +
+            "\"1234567890\", \"accountNumber\" : \"C001\", \"dateOfBirth\" : \"01-01-1980\", \"securityQuestion\" : \"What is your favorite color?\", " +
+            "\"securityAnswer\" : \"Blue\" }, { \"firstName\" : \"Bob\", \"lastName\" : \"Smith\", \"username\" : \"bob.smith\", \"password\" : \"password\"," +
+            " \"address\" : \"456 Oak St\", \"email\" : \"bob.smith@example.com\", \"phoneNumber\" : \"9876543210\", \"accountNumber\" : \"C002\", \"dateOfBirth\" :" +
+            " \"02-02-1990\", \"securityQuestion\" : \"What is your pet's name?\", \"securityAnswer\" : \"Fluffy\" }]";
+
     public static void main(String[] args) {
         // Start with an empty priority queue
         LListPriorityQueue<BankAccount> priorityQueue = LListPriorityQueue.getInstance();
@@ -92,9 +120,109 @@ public class Main {
         System.out.println("Attempting login with invalid credentials of 'invalidUsername' and 'invalidPassword'...");
         LoginFunction loginFunction = new LoginFunction(new Security());
         loginFunction.login("invalidUsername", "invalidPassword");
+
+
+        objectMapper = new ObjectMapper();
+
+        System.out.println();
+        System.out.println("\nCreating separate Customer object to perform JSON test requirement in assignment");
+
+        // Create Customer object
+        Customer customer = new Customer("Alice", "Johnson", "alice.johnson", "password",
+            "123 Main St", "alice.johnson@example.com", "1234567890", "C001",
+            "01-01-1980", "What is your favorite color?", "Blue");
+        String customerString = "";
+
+        // Convert Customer object to JSON string
+            try {
+            customerString = objectMapper.writeValueAsString(customer);
+        } catch (JsonProcessingException jpe) {
+        System.out.println(jpe.getMessage());
+        }
+
+        System.out.println("\nJSON String version of Customer object\n" + customerString);
+
+        try {
+        // Parse JSON strings to JsonNode
+        JsonNode jsonNode1 = objectMapper.readTree(jsonCustomerString);
+        JsonNode jsonNode2 = objectMapper.readTree(jsonCustomersString);
+
+        // Accessing JSON properties
+        String firstName = jsonNode1.get("firstName").asText();
+        String lastName = jsonNode1.get("lastName").asText();
+        String username = jsonNode1.get("username").asText();
+        String email = jsonNode1.get("email").asText();
+        String phoneNumber = jsonNode1.get("phoneNumber").asText();
+        String accountNumber = jsonNode1.get("accountNumber").asText();
+        String dateOfBirth = jsonNode1.get("dateOfBirth").asText();
+        String securityQuestion = jsonNode1.get("securityQuestion").asText();
+        String securityAnswer = jsonNode1.get("securityAnswer").asText();
+
+        System.out.println("\nSingle Customer Detail JSON String:");
+        String treeString = jsonNode1.toPrettyString();
+        System.out.println(treeString);
+
+        System.out.println("\nMultiple Customer Detail JSON String:");
+        treeString = jsonNode2.toPrettyString();
+        System.out.println(treeString);
+
+        System.out.println("\nNow printing each customer detail: ");
+
+        Iterator<JsonNode> it = jsonNode2.elements();
+        while (it.hasNext()) {
+            JsonNode jNode = it.next();
+
+            // Printing JSON properties for the current node
+            System.out.println("\nName: " + jNode.get("firstName").asText() + " " + jNode.get("lastName").asText());
+            System.out.println("Username: " + jNode.get("username").asText());
+            System.out.println("Email: " + jNode.get("email").asText());
+            System.out.println("Phone Number: " + jNode.get("phoneNumber").asText());
+            System.out.println("Account Number: " + jNode.get("accountNumber").asText());
+            System.out.println("Date of Birth: " + jNode.get("dateOfBirth").asText());
+            System.out.println("Security Question: " + jNode.get("securityQuestion").asText());
+            System.out.println("Security Answer: " + jNode.get("securityAnswer").asText());
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
+    // Working with Customer Objects
+    readJsonCustomer();
+    readJsonCustomers();
+}
 
+    public static void readJsonCustomer() {
+        Customer customerObj = null;
+
+        try {
+            customerObj = objectMapper.readValue(jsonCustomerString, Customer.class);
+        } catch (JsonProcessingException jpe) {
+            System.out.println(jpe.getMessage());
+        }
+
+        // Getting data from Customer object created from JSON String
+        System.out.println("\nReading data from JSON String of single customer:");
+        if (customerObj != null) {
+            System.out.println(customerObj.toString());
+        }
+    }
+
+    public static void readJsonCustomers() {
+        List<Customer> customerList = null;
+
+        try {
+            customerList = objectMapper.readValue(jsonCustomersString, new TypeReference<List<Customer>>() {
+            });
+        } catch (JsonProcessingException jpe) {
+            System.out.println(jpe.getMessage());
+        }
+
+        System.out.println("\nReading data from multiple customers in JSON array:");
+        for (Customer customer : customerList) {
+            System.out.println(customer.toString());
+        }
+    }
 
     // Utility method to print the priority queue
     private static void printPriorityQueue(LListPriorityQueue<BankAccount> priorityQueue) {
