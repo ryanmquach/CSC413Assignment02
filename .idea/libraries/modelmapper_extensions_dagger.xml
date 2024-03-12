@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="modelmapper.extensions.dagger" type="repository">
+    <properties maven-id="org.modelmapper.extensions:modelmapper-dagger:2.3.2" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/modelmapper/extensions/modelmapper-dagger/2.3.2/modelmapper-dagger-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/modelmapper/modelmapper/2.3.2/modelmapper-2.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
